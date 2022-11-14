@@ -82,17 +82,15 @@ options.MaxEpochs = 30;
 % learnRate
 options.InitialLearnRate = 0.001;
 % executionEnvironment
+options.ExecutionEnvironment = 'auto';
 % numIterationsPerEpoch 
+%options.numIterationsPerEpoch = 5 ;
+
+options.OutputNetwork = 'best-validation-loss';
+
 options.ValidationData = {XValid, YValid};
 
 options.Plots = 'training-progress';
-
-% training on CPU or GPU(if available);
-% 'auto': Use a GPU if one is available. Otherwise, use the CPU.
-% 'cpu' : Use the CPU
-% 'gpu' : Use the GPU.
-% 'multi-gpu' :Use multiple GPUs
-% 'parallel :
 
 
 %%  Train neural network
