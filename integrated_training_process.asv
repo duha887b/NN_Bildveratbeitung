@@ -27,16 +27,8 @@ X2 = processImagesMNIST(ImagesTest);
 Y2 = processLabelsMNIST(LabelsTest);
 XImages = X1;
 YLabels = Y1;
-%TODO combine 2 arrays
 
-[trainInd,testInd,validInd] = dividerand(numel(YLabels),0.7,0.1,0.2);
-
-XTrain = XImages(trainInd);
-YTrain = YLabels(trainInd);
-XTest = XImages(testInd);
-YTest = YLabels(testInd);
-XValid = XImages(validInd);
-YValid = YLabels(validInd);
+[trainInd,testInd,validInd] = deviderand(60000,0.7,0.1,0.2)
 
 path(oldpath);
 
