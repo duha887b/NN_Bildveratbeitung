@@ -15,7 +15,6 @@ disp('Loading training data...')
 
 %@Dustin Hanusch 
 
-oldpath = addpath(fullfile(matlabroot,'examples','nnet','main'));
 ImagesTrain = 'train-images-idx3-ubyte.gz';
 LabelsTrain = 'train-labels-idx1-ubyte.gz';
 ImagesTest = 't10k-images-idx3-ubyte.gz';
@@ -25,9 +24,11 @@ X1 = processImagesMNIST(ImagesTrain);
 Y1 = processLabelsMNIST(LabelsTrain);
 X2 = processImagesMNIST(ImagesTest);
 Y2 = processLabelsMNIST(LabelsTest);
+
+%TODO combine 2 arrays
 XImages = X1;
 YLabels = Y1;
-%TODO combine 2 arrays
+
 
 [trainInd,testInd,validInd] = dividerand(numel(YLabels),0.7,0.1,0.2);
 
@@ -38,15 +39,33 @@ YTest = YLabels(testInd);
 XValid = XImages(:,:,:,validInd);
 YValid = YLabels(validInd);
 
-path(oldpath);
-
 %% define network
-%   most basic network
-%NN_layers = [ ...
+%   most basic networklayer0
 
-%];
+inputSize = [25,25,2];
+layer0 = imageInputLayer(inputSize);
 
-% visualize the neural network
+outputSize = 392;
+layer1 = fullyConnectedLayer(outputSize);
+
+layer2 = reluLayer;
+
+layer3 = fullyConnectedLayer(outputSize);
+
+layer4 = softmaxLayer;
+
+layer5 = classificationLayer;
+
+NN_layers = [ ...
+    layer0
+    layer1
+    layer2
+    layer3
+    layer4
+    layer5
+    ];
+
+visualize the neural network
 %analyzeNetwork(NN_layers)
 %% Specify Training Options (define hyperparameters)
 
