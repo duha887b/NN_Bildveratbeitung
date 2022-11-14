@@ -31,11 +31,11 @@ YLabels = Y1;
 
 [trainInd,testInd,validInd] = dividerand(numel(YLabels),0.7,0.1,0.2);
 
-XTrain = XImages(trainInd);
+XTrain = XImages(:,:,:,trainInd);
 YTrain = YLabels(trainInd);
-XTest = XImages(testInd);
+XTest = XImages(:,:,:,testInd);
 YTest = YLabels(testInd);
-XValid = XImages(validInd);
+XValid = XImages(:,:,:,validInd);
 YValid = YLabels(validInd);
 
 path(oldpath);
