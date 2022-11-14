@@ -102,4 +102,6 @@ trainedNet = trainNetwork(XTrain,YTrain,NN_layers,options);
 
 %% test neural network & visualization 
 % Calculate accuracy
-
+YPred = classify(trainedNet,XTest);
+accuracy = sum(YPred == YTest)/numel(YTest);
+accuracy
