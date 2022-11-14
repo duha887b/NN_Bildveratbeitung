@@ -105,3 +105,6 @@ trainedNet = trainNetwork(XTrain,YTrain,NN_layers,options);
 YPred = classify(trainedNet,XTest);
 accuracy = sum(YPred == YTest)/numel(YTest);
 accuracy
+z = 1:numel(YTest);
+scatter3(YTest,z,YPred);
+
