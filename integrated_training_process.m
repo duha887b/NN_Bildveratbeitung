@@ -106,5 +106,21 @@ YPred = classify(trainedNet,XTest);
 accuracy = sum(YPred == YTest)/numel(YTest);
 accuracy
 z = 1:numel(YTest);
-scatter3(YTest,z,YPred);
+%scatter3(YTest,z,YPred);
+weights = zeros(10,10);
+for i =1:numel(YTest)
+    weights(YTest(i),YPred(i)) =weights(YTest(i),YPred(i)) +1;
+end    
+for c = 1:10
+    for r = 1:10
+        if weights(c,r) == 0
+            continue
+        end
+        scatter(c,r,weights(c,r),"filled",'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .5 .5]);
+        hold on;
+    end
+end
+hold off
+
+
 
