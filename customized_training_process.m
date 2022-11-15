@@ -13,11 +13,59 @@ disp('Loading training data...')
 % Y: output / for Classification: label
 % for example: XTrain, YTrain, XTest, YTest, XValid, YValid
 
+%@Dustin Hanusch 
+oldpath = addpath(fullfile(matlabroot,'examples','nnet','main'));
+ImagesTrain = 'train-images-idx3-ubyte.gz';
+LabelsTrain = 'train-labels-idx1-ubyte.gz';
+ImagesTest = 't10k-images-idx3-ubyte.gz';
+LabelsTest = 't10k-labels-idx1-ubyte.gz';
+
+X1 = processImagesMNIST(ImagesTrain);
+Y1 = processLabelsMNIST(LabelsTrain);
+X2 = processImagesMNIST(ImagesTest);
+Y2 = processLabelsMNIST(LabelsTest);
+
+path(oldpath);
+
+%TODO combine 2 arrays
+XImages = X1;
+YLabels = Y1;
+
+
+[trainInd,testInd,validInd] = dividerand(numel(YLabels),0.7,0.1,0.2);
+
+XTrain = XImages(:,:,:,trainInd);
+YTrain = YLabels(trainInd);
+XTest = XImages(:,:,:,testInd);
+YTest = YLabels(testInd);
+XValid = XImages(:,:,:,validInd);
+YValid = YLabels(validInd);
 
 %% define network (dlnet)
-NN_layers = [...
-    ...
-   ];
+
+inputSize = [28 28 1];
+layer0 = imageInputLayer(inputSize);
+
+outputSize = 392;
+layer1 = fullyConnectedLayer(outputSize);
+
+layer2 = reluLayer;
+
+layer3 = fullyConnectedLayer(10);
+
+layer4 = softmaxLayer;
+
+layer5 = classificationLayer;
+
+NN_layers = [ ...
+    layer0
+    layer1
+    layer2
+    layer3
+    layer4
+    layer5
+    ];
+
 
 % convert to a layer graph
 lgraph = layerGraph(NN_layers);
