@@ -148,7 +148,11 @@ for kc = 1:10
     hold on
     
 end
-plot(accuracy);
+scatter(1:8,accuracy,15000,"red","_");
+scatter(0,accuracy,10,"red","_");
+scatter(9,accuracy,10,"red","_");
+
+
 
 hold off
 
