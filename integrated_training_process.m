@@ -103,7 +103,7 @@ trainedNet = trainNetwork(XTrain,YTrain,NN_layers,options);
 %% test neural network & visualization 
 % Calculate accuracy
 YPred = classify(trainedNet,XTest);
-%accuracy = sum(YPred == YTest)/numel(YTest);
+accuracy = sum(YPred == YTest)/numel(YTest);
 accuracy
 
 
@@ -112,6 +112,9 @@ weights = zeros(10,10);
 for i =1:numel(YTest)
     weights(YTest(i),YPred(i)) = weights(YTest(i),YPred(i)) +1;
 end 
+
+tiledlayout(1,2)
+nexttile
 
 for c = 1:10
     for r = 1:10
@@ -122,9 +125,10 @@ for c = 1:10
         hold on;
     end
 end
-hold off
 
+nexttile
 x = 0:9;
+
 
 for kc = 1:10
     tmp = 0;
@@ -138,10 +142,13 @@ for kc = 1:10
     end
     
     
-    plot(kc-1,tmp/tmp2);
+    scatter(kc-1,tmp/tmp2,'MarkerEdgeColor',[0 .5 .5]);
+    
+    grid on
     hold on
-   
+    
 end
+plot(accuracy);
 
 hold off
 
