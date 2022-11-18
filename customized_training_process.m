@@ -74,31 +74,31 @@ analyzeNetwork(dlnet)
 
 %% Specify Training Options (define hyperparameters)
 
-% miniBatchSize
-% numEpochs
-% learnRate 
-% executionEnvironment
-% numIterationsPerEpoch 
+miniBatchSize = 128;
 
-% training on CPU or GPU(if available);
-% 'auto': Use a GPU if one is available. Otherwise, use the CPU.
-% 'cpu' : Use the CPU
-% 'gpu' : Use the GPU.
-% 'multi-gpu' :Use multiple GPUs
-% 'parallel :
+numEpochs = 30;
+
+learnRate = 0.01;
+
+executionEnvironment = 'auto';
+
+numIterationsPerEpoch = floor(numel(YTrain)./miniBatchSize);
+
+maxIteration = numEpochs * numIterationsPerEpoch;
 
 
 %% Train neural network
 
 % initialize the average gradients and squared average gradients
-% averageGrad
-% averageSqGrad
+averageGrad = [];
+averageSqGrad = [];
 
 % "for-loop " for training
 
 for epoch = 1:numEpochs
     
    % updae learnable parameters based on mini-batch of data
+    
     for i = 1:numIterationsPerEpoch
         % Read mini-batch of data and convert the labels to dummy variables.
 
