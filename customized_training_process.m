@@ -44,7 +44,7 @@ YValid = YLabels(validInd);
 %% define network (dlnet)
 
 inputSize = [28 28 1];
-layer0 = imageInputLayer(inputSize);
+layer0 = imageInputLayer(inputSize,Normalization="none");
 
 outputSize = 392;
 layer1 = fullyConnectedLayer(outputSize);
@@ -55,7 +55,6 @@ layer3 = fullyConnectedLayer(10);
 
 layer4 = softmaxLayer;
 
-layer5 = classificationLayer;
 
 NN_layers = [ ...
     layer0
@@ -63,7 +62,6 @@ NN_layers = [ ...
     layer2
     layer3
     layer4
-    layer5
     ];
 
 
