@@ -75,16 +75,14 @@ analyzeNetwork(NN_layers)
 % solver "sgdm" "rmsprop" "adam"
 options = trainingOptions("adam");
 
-% miniBatchSize
+
 options.MiniBatchSize = 128;
-% numEpochs
+
 options.MaxEpochs = 30;
-% learnRate
+
 options.InitialLearnRate = 0.001;
-% executionEnvironment
+
 options.ExecutionEnvironment = 'auto';
-% numIterationsPerEpoch 
-%options.numIterationsPerEpoch = 5 ;
 
 options.OutputNetwork = 'best-validation-loss';
 
@@ -94,9 +92,8 @@ options.Plots = 'training-progress';
 
 
 %%  Train neural network
-% define "trainingOptions"
+
 % training using "trainNetwork"
-%imdsTrain = imageDatastore(XTrain);
 trainedNet = trainNetwork(XTrain,YTrain,NN_layers,options);
 
 
@@ -107,7 +104,7 @@ accuracy = sum(YPred == YTest)/numel(YTest);
 accuracy
 
 
-%scatter3(YTest,z,YPred);
+
 weights = zeros(10,10);
 for i =1:numel(YTest)
     weights(YTest(i),YPred(i)) = weights(YTest(i),YPred(i)) +1;
@@ -116,15 +113,19 @@ end
 tiledlayout(1,2)
 nexttile
 
-for c = 1:10
-    for r = 1:10
-        if weights(c,r) == 0
-            continue
-        end
-        scatter(c-1,r-1,weights(c,r),'MarkerEdgeColor',[0 .5 .5]);
-        hold on;
-    end
-end
+% for c = 1:10
+%     for r = 1:10
+%         if weights(c,r) == 0
+%             continue
+%         end
+%         scatter(c-1,r-1,weights(c,r),'MarkerEdgeColor',[0 .5 .5]);
+%         hold on;
+%     end
+% end
+
+
+confusionchart(YTest,YPred)
+
 
 nexttile
 x = 0:9;
