@@ -98,20 +98,29 @@ averageSqGrad = [];
 for epoch = 1:numEpochs
     
    % updae learnable parameters based on mini-batch of data
+   dlnet =  dlupdate()
     
     for i = 1:numIterationsPerEpoch
         % Read mini-batch of data and convert the labels to dummy variables.
-
+        
+        idx = (i-1)*miniBatchSize+1:i*miniBatchSize;
+        XTmp = XTrain(:,:,:,idx);
+        YTmp = YTrain(idx);
 
         % Convert mini-batch of data to a dlarray.
-        
+        XTmp = dlarray(XTmp,'SSCB');
         
         % Evaluate the model gradients and loss using dlfeval and the
         % modelGradients helper function.
+        [gradients,loss,dlyPred] = dlfeval(@modelGradients,XTmp,YTmp);
         
         % Update the network parameters using the optimizer, like SGD, Adam
+        %1 ADAM
+        [dlnet,averageGrad,averageSqGrad ] = adamupdate(dlnet,gradients,averageGrad,averageSqGrad,i);
         
         % Calculate accuracy & show the training progress.
+        accuracy = sum(dlyPred == YTmp)/numel(YTmp);
+        fprintf("Epoche: %d ; Iteration: %d ; Accuracy: %d ; Validation: ",epoch,i,accuracy);
 
         % option: validation
 
