@@ -142,13 +142,16 @@ for kc = 1:10
     end
     
     
-    scatter(kc-1,tmp/tmp2,'MarkerEdgeColor',[0 .5 .5]);
+    scatter(kc-1,tmp/tmp2,'x','MarkerEdgeColor',[0 .5 .5]);
     
     grid on
     hold on
     
 end
-scatter(x,accuracy,39,"yellow");
+scatter(1:8,accuracy,15000,"red","_");
+scatter(0,accuracy,10,"red","_");
+scatter(9,accuracy,10,"red","_");
+
 
 
 hold off

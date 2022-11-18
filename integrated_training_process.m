@@ -142,7 +142,7 @@ for kc = 1:10
     end
     
     
-    scatter(kc-1,tmp/tmp2,'MarkerEdgeColor',[0 .5 .5]);
+    scatter(kc-1,tmp/tmp2,100,'x','MarkerEdgeColor',[0 0 1]);
     
     grid on
     hold on
