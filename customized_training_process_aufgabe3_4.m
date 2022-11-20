@@ -74,9 +74,9 @@ analyzeNetwork(dlnet)
 
 %% Specify Training Options (define hyperparameters)
 
-miniBatchSize = 128;
+miniBatchSize = 64;
 
-numEpochs = 10;
+numEpochs = 30;
 
 learnRate = 0.01;
 
