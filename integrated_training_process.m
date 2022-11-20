@@ -113,6 +113,7 @@ end
 tiledlayout(1,2)
 nexttile
 
+
 % for c = 1:10
 %     for r = 1:10
 %         if weights(c,r) == 0
@@ -123,9 +124,10 @@ nexttile
 %     end
 % end
 
-
 confusionchart(YTest,YPred)
-
+title('Vorhersage/wahrer Wert')
+xlabel('Vorhersage')
+ylabel('wahrer Wert')
 
 nexttile
 x = 0:9;
@@ -153,7 +155,9 @@ scatter(1:8,accuracy,15000,"red","_");
 scatter(0,accuracy,10,"red","_");
 scatter(9,accuracy,10,"red","_");
 
-
+title('μ=f(Ziffer)')
+xlabel('Ziffer')
+ylabel('Accuracy μ')
 
 hold off
 
