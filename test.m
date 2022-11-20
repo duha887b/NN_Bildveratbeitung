@@ -1,1 +1,0 @@
- fprintf("Epoche: %d ; Iteration: %d ; Accuracy: %d ; Validation:\n ",10,11,12);
