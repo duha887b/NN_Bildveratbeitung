@@ -135,6 +135,10 @@ ylabel('Accuracy μ')
 legend('adam','sgdm')
 hold off
 
+%% Verschiedene BatchSize
+
+%% Plot Batch
+
 %% Train neural network
 function acc = calculateAccuracy(miniBatchSize, ...
                                     numEpochs, ...
