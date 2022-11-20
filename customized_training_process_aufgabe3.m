@@ -76,7 +76,7 @@ analyzeNetwork(dlnet)
 
 miniBatchSize = 128;
 
-numEpochs = 1;
+numEpochs = 10;
 
 learnRate = 0.01;
 
@@ -132,6 +132,7 @@ grid on
 title('μ=f(rate)')
 xlabel('rate')
 ylabel('Accuracy μ')
+legend('adam','sgdm')
 hold off
 
 %% Train neural network
@@ -250,7 +251,7 @@ function acc = calculateAccuracy(miniBatchSize, ...
     
     monitor.Status = "Done";
     
-    % Calculate accuracy
+    % Calculate accuracy !Test Data!
     
     YPred = predict(dlnet,dlarray(single(XTest),'SSCB'));
     [~,idx] = max(extractdata(YPred),[],1);
