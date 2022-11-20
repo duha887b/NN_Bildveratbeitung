@@ -103,7 +103,7 @@ monitor.Metrics = ["TrainingLoss","ValidationLoss","TrainingAccuracy","Validatio
 
 monitor.XLabel = "Iteration";
 groupSubPlot(monitor,"Loss",["TrainingLoss","ValidationLoss"]);
-groupSubPlot(monitor,"Accuracy",["TrainingAccuracy","ValidationAccuracy"]);
+groupSubPlot(monitor,"Accuracy(%)",["TrainingAccuracy","ValidationAccuracy"]);
 
 iterations = 0;
 
@@ -164,9 +164,16 @@ for epoch = 1:numEpochs
             
             % update training Monitor
 
-            updateInfo(monitor,Learning_rate=learnRate,Epoch= string(epoch) + " of " + string(numEpochs), Iteration = string(iterations) + " of " + string(maxIteration),Training_Accuracy= string((1-loss)*100) +"%",Validation_Accuracy= string((ValAccuracy)*100)+"%");
+            updateInfo(monitor,Learning_rate=learnRate,Epoch= string(epoch) + " of " + string(numEpochs), ...
+                        Iteration = string(iterations) + " of " + string(maxIteration), ...
+                        Training_Accuracy= string((1-loss)*100) +"%", ...
+                        Validation_Accuracy= string((ValAccuracy)*100)+"%");
             
-            recordMetrics(monitor,iterations,TrainingLoss=loss,TrainingAccuracy=(1-loss)*100,ValidationLoss=(1-ValAccuracy),ValidationAccuracy=ValAccuracy*100);
+            recordMetrics(monitor,iterations, ...
+                           TrainingLoss=loss, ...
+                           TrainingAccuracy=(1-loss)*100, ...
+                           ValidationLoss=(1-ValAccuracy), ...
+                           ValidationAccuracy=ValAccuracy*100);
 
 
             monitor.Progress = 100*iterations/maxIteration;
@@ -183,6 +190,49 @@ end
 monitor.Status = "Done";
 
 %% test neural network & visualization 
+
+% Calculate accuracy
+
+YPred = predict(dlnet,dlarray(single(XTest),'SSCB'));
+[~,idx] = max(extractdata(YPred),[],1);
+YPred = classes(idx);
+accuracy = mean(YPred==YTest);
+accuracy
+
+weights = zeros(11,11);
+for i =1:numel(YTest)
+    
+    weights(double(YTest(i))+1,str2num(YPred{i})+1) = weights(double(YTest(i))+1,str2num(YPred{i})+1) +1;
+    
+end 
+weights
+
+for kc = 1:10
+    tmp = 0;
+    tmp2 = 0;
+    for kr = 2:11
+        if kc == kr-1 
+            tmp = weights(kr,kc);
+        end
+
+        tmp2 = tmp2 + weights(kr,kc);
+        
+    end
+    scatter(kc-1,tmp/tmp2,100,'x','MarkerEdgeColor',[0 0 1]);
+    
+    grid on
+    hold on
+    
+end
+scatter(1:8,accuracy,15000,"red","_");
+scatter(0,accuracy,10,"red","_");
+scatter(9,accuracy,10,"red","_");
+
+title('μ=f(Ziffer)')
+xlabel('Ziffer')
+ylabel('Accuracy μ')
+
+hold off
 
 %% Define Model Gradients Function
 % 
