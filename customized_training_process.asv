@@ -98,7 +98,7 @@ averageSqGrad = [];
 
 % ini trainig progress monitor
 monitor = trainingProgressMonitor;
-monitor.Info = ["Learning_rate","Epoch","Iteration","Training_Accuracy","Validation_Accuracy"];
+monitor.Info = ["LearningRate","Epoch","Iteration"];
 monitor.Metrics = ["TrainingLoss","ValidationLoss","TrainingAccuracy","ValidationAccuracy"];
 
 monitor.XLabel = "Iteration";
@@ -111,20 +111,10 @@ iterations = 0;
 monitor.Status = "Runnig";
 for epoch = 1:numEpochs
     
-   
-    if monitor.Stop
-        break
-    end
-
-    % updae learnable parameters based on mini-batch of data
-
-    count=5;
+   % updae learnable parameters based on mini-batch of data
+    
+    count=0;
     for i = 1:numIterationsPerEpoch
-
-         if monitor.Stop
-            break
-         end
-
         iterations = iterations +1;
         % Read mini-batch of data and convert the labels to dummy variables.
         
@@ -164,23 +154,19 @@ for epoch = 1:numEpochs
             
             % update training Monitor
 
-            updateInfo(monitor,Learning_rate=learnRate,Epoch= string(epoch) + " of " + string(numEpochs), Iteration = string(iterations) + " of " + string(maxIteration),Training_Accuracy= string((1-loss)*100) +"%",Validation_Accuracy= string((ValAccuracy)*100)+"%");
-            
-            recordMetrics(monitor,iterations,TrainingLoss=loss,TrainingAccuracy=(1-loss)*100,ValidationLoss=(1-ValAccuracy),ValidationAccuracy=ValAccuracy*100);
+            updateInfo(monitor,LearningRate=learnRate,Epoch= string(epoch) + "of" + string(numEpochs), Iteration = string(iterations) + "of" + string(maxIteration));
 
-
-            monitor.Progress = 100*iterations/maxIteration;
+            monitor
             count = count + updateMonitorIter;
         end
 
-        
+        % monitor Training
 
         
 
     end
 end
 
-monitor.Status = "Done";
 
 %% test neural network & visualization 
 
