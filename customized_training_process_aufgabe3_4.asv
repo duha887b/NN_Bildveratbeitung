@@ -145,8 +145,6 @@ adamacc = [];
 
 for i = 1:numel(multiBatchSize)
     tmpTstart = tic;
-    numIterationsPerEpoch = floor(numel(YTrain)/multiBatchSize(i));
-    maxIteration = numEpochs * numIterationsPerEpoch;
     adamacc(i) = calculateAccuracy(multiBatchSize(i), ...
                                     numEpochs, ...
                                     learnRate, ...
@@ -170,7 +168,6 @@ plot(multiBatchSize,adamacc);
 title('μ=f(batch size)')
 xlabel('batch size')
 ylabel('Accuracy μ ')
-grid on
 hold on
 
 nexttile
@@ -178,7 +175,6 @@ plot(multiBatchSize,elepsedTime);
 title('t=f(batch size)')
 xlabel('batch size')
 ylabel('Time t in s ')
-grid on
 hold off
 %% Train neural network
 function acc = calculateAccuracy(miniBatchSize, ...
