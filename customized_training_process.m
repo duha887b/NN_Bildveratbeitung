@@ -197,7 +197,6 @@ YPred = predict(dlnet,dlarray(single(XTest),'SSCB'));
 [~,idx] = max(extractdata(YPred),[],1);
 YPred = classes(idx);
 accuracy = mean(YPred==YTest);
-accuracy
 
 weights = zeros(11,11);
 for i =1:numel(YTest)
@@ -205,7 +204,6 @@ for i =1:numel(YTest)
     weights(double(YTest(i))+1,str2num(YPred{i})+1) = weights(double(YTest(i))+1,str2num(YPred{i})+1) +1;
     
 end 
-weights
 
 for kc = 1:10
     tmp = 0;
