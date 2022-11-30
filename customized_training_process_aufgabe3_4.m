@@ -14,6 +14,9 @@ disp('Loading training data...')
 % for example: XTrain, YTrain, XTest, YTest, XValid, YValid
 
 %@Dustin Hanusch 
+
+% lade Trainingsdatensatz
+
 oldpath = addpath(fullfile(matlabroot,'examples','nnet','main'));
 ImagesTrain = 'train-images-idx3-ubyte.gz';
 LabelsTrain = 'train-labels-idx1-ubyte.gz';
@@ -27,10 +30,10 @@ Y2 = processLabelsMNIST(LabelsTest);
 
 path(oldpath);
 
-%TODO combine 2 arrays
 XImages = X1;
 YLabels = Y1;
 
+% Aufteilen der Daten in Test, Validierung und Trainingsdaten
 
 [trainInd,testInd,validInd] = dividerand(numel(YLabels),0.7,0.1,0.2);
 
@@ -42,6 +45,7 @@ XValid = XImages(:,:,:,validInd);
 YValid = YLabels(validInd);
 
 %% define network (dlnet)
+
 
 inputSize = [28 28 1];
 layer0 = imageInputLayer(inputSize,Normalization="none" );
@@ -74,6 +78,8 @@ analyzeNetwork(dlnet)
 
 %% Specify Training Options (define hyperparameters)
 
+%default Werte der Hyperparameter
+
 miniBatchSize = 64;
 
 numEpochs = 30;
@@ -89,13 +95,17 @@ maxIteration = numEpochs * numIterationsPerEpoch;
 classes = categories(YTrain);
 
 updateMonitorIter = 50;
-%% Verschiedene Lernraten
+%% Verschiedene Lernraten (Aufgabe 3)
 
+% Definition der variablen Hyperparameter
 multiLearnRate =  [0.1 0.01 0.001 0.0001 0.00001 0.000001];
+
+%ergebnisvektoren der Präzision 
 adamacc = [];
 sgdmacc = [];
-%adam
-for i=1:numel(multiLearnRate)
+
+% verwenden von Solver adam
+for i=1:numel(multiLearnRate)                                       % iteration über die verschiedenen Lernraten 
     adamacc(i) = calculateAccuracy(miniBatchSize, ...
                                     numEpochs, ...
                                     multiLearnRate(i), ...
@@ -108,8 +118,9 @@ for i=1:numel(multiLearnRate)
                                     XTest,YTest, ...
                                     dlnet,1);
 end
-%sgdm
-for i=1:numel(multiLearnRate)
+
+%verwenden von Solver sgdm
+for i=1:numel(multiLearnRate)                                       %iteration über die verschiedenen Lernraten
     sgdmacc(i) = calculateAccuracy(miniBatchSize, ...
                                     numEpochs, ...
                                     multiLearnRate(i), ...
@@ -124,10 +135,11 @@ for i=1:numel(multiLearnRate)
 end
 
 
-%% Plot verschiedene Lernraten
-semilogx(multiLearnRate,adamacc);
+%% Plot verschiedene Lernraten (erzeugen der Diagramme für Aufgabe 3)
+
+semilogx(multiLearnRate,adamacc);                                   % plot adam 
 hold on
-semilogx(multiLearnRate,sgdmacc);
+semilogx(multiLearnRate,sgdmacc);                                   % plot sgdm
 grid on
 title('μ=f(rate)')
 xlabel('rate')
@@ -135,18 +147,18 @@ ylabel('Accuracy μ')
 legend('adam','sgdm')
 hold off
 
-%% Verschiedene BatchSize
+%% Verschiedene BatchSize (Aufgabe 4)
 
-% best learnRate
-learnRate = 0.001;
-multiBatchSize = [16 32 64 128 256];
+%Verändern der default Hyperparameter
+learnRate = 0.001;                                                  % beste rate aus Aufgabe 3
+multiBatchSize = [16 32 64 128 256];                                % verschidenen BatchSize 
 elepsedTime = [];
 adamacc = [];
 
-for i = 1:numel(multiBatchSize)
-    tmpTstart = tic;
-    numIterationsPerEpoch = floor(numel(YTrain)/multiBatchSize(i));
-    maxIteration = numEpochs * numIterationsPerEpoch;
+for i = 1:numel(multiBatchSize)                                     % iteration über verschieden BatchSize
+    tmpTstart = tic;                                                % Laufzeitberechnung starten 
+    numIterationsPerEpoch = floor(numel(YTrain)/multiBatchSize(i)); % neu berechnung der Anzahl von iterationen pro Epoche
+    maxIteration = numEpochs * numIterationsPerEpoch;               % ebenso Gesamtanzahl der Iterationen 
     adamacc(i) = calculateAccuracy(multiBatchSize(i), ...
                                     numEpochs, ...
                                     learnRate, ...
@@ -159,14 +171,14 @@ for i = 1:numel(multiBatchSize)
                                     XTest,YTest, ...
                                     dlnet,1);
      
-    elepsedTime(i) = toc(tmpTstart);
+    elepsedTime(i) = toc(tmpTstart);                                % beenden und speichern der Laufzeitberechnung
     tmpTstart = 0;
 
 end
-%% Plot Batch
+%% Plot BatchSize (Diagramme für Aufgabe 4)
 tiledlayout(1,2)
 nexttile
-plot(multiBatchSize,adamacc);
+plot(multiBatchSize,adamacc);                                       % plot BatchSize vs Accuracy
 title('μ=f(batch size)')
 xlabel('batch size')
 ylabel('Accuracy μ ')
@@ -174,13 +186,13 @@ grid on
 hold on
 
 nexttile
-plot(multiBatchSize,elepsedTime);
+plot(multiBatchSize,elepsedTime);                                   % plot BatchSize vs Time
 title('t=f(batch size)')
 xlabel('batch size')
 ylabel('Time t in s ')
 grid on
 hold off
-%% Train neural network
+%% Train neural network ( ausgelagerte Funktion um das Netzt zu trenieren)
 function acc = calculateAccuracy(miniBatchSize, ...
                                     numEpochs, ...
                                     learnRate, ...
@@ -229,8 +241,9 @@ function acc = calculateAccuracy(miniBatchSize, ...
              end
     
             iterations = iterations +1;
-            % Read mini-batch of data and convert the labels to dummy variables.
             
+            % Read mini-batch of data and convert the labels to dummy variables.
+           
             idx = (i-1)*miniBatchSize+1:i*miniBatchSize;
             XTmp = XTrain(:,:,:,idx);
             XTmp = single(XTmp);

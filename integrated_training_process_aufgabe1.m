@@ -27,11 +27,10 @@ Y2 = processLabelsMNIST(LabelsTest);
 
 path(oldpath);
 
-%TODO combine 2 arrays
 XImages = X1;
 YLabels = Y1;
 
-
+% Aufteilen der Daten in Test, Validierung und Trainingsdaten
 [trainInd,testInd,validInd] = dividerand(numel(YLabels),0.7,0.1,0.2);
 
 XTrain = XImages(:,:,:,trainInd);
@@ -101,10 +100,8 @@ trainedNet = trainNetwork(XTrain,YTrain,NN_layers,options);
 % Calculate accuracy
 YPred = classify(trainedNet,XTest);
 accuracy = sum(YPred == YTest)/numel(YTest);
-accuracy
 
-
-
+%% (nicht gefordert für Protokoll)
 weights = zeros(10,10);
 for i =1:numel(YTest)
     weights(YTest(i),YPred(i)) = weights(YTest(i),YPred(i)) +1;
