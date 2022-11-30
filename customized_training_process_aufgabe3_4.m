@@ -82,7 +82,7 @@ analyzeNetwork(dlnet)
 
 miniBatchSize = 64;
 
-numEpochs = 30;
+numEpochs = 10;
 
 learnRate = 0.01;
 
