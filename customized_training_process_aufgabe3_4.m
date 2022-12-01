@@ -98,7 +98,7 @@ updateMonitorIter = 50;
 %% Verschiedene Lernraten (Aufgabe 3)
 
 % Definition der variablen Hyperparameter
-multiLearnRate =  [0.1 0.01 0.001 0.0001 0.00001 0.000001];
+multiLearnRate =  [10 1 0.1 0.01 0.001 0.0001 0.00001 0.000001 0.0000001 0.00000001];
 
 %ergebnisvektoren der Präzision 
 adamacc = [];
@@ -151,7 +151,7 @@ hold off
 
 %Verändern der default Hyperparameter
 learnRate = 0.001;                                                  % beste rate aus Aufgabe 3
-multiBatchSize = [16 32 64 128 256];                                % verschidenen BatchSize 
+multiBatchSize = [16 24 32 48 64 96 128 172 256];                                % verschidenen BatchSize 
 elepsedTime = [];
 adamacc = [];
 
@@ -212,33 +212,33 @@ function acc = calculateAccuracy(miniBatchSize, ...
     vel = [];
     
     % ini trainig progress monitor
-    monitor = trainingProgressMonitor;
-    monitor.Info = ["Learning_rate","Epoch","Iteration","Training_Accuracy","Validation_Accuracy"];
-    monitor.Metrics = ["TrainingLoss","ValidationLoss","TrainingAccuracy","ValidationAccuracy"];
-    
-    monitor.XLabel = "Iteration";
-    groupSubPlot(monitor,"Loss",["TrainingLoss","ValidationLoss"]);
-    groupSubPlot(monitor,"Accuracy(%)",["TrainingAccuracy","ValidationAccuracy"]);
-    
+%     monitor = trainingProgressMonitor;
+%     monitor.Info = ["Learning_rate","Epoch","Iteration","Training_Accuracy","Validation_Accuracy"];
+%     monitor.Metrics = ["TrainingLoss","ValidationLoss","TrainingAccuracy","ValidationAccuracy"];
+%     
+%     monitor.XLabel = "Iteration";
+%     groupSubPlot(monitor,"Loss",["TrainingLoss","ValidationLoss"]);
+%     groupSubPlot(monitor,"Accuracy(%)",["TrainingAccuracy","ValidationAccuracy"]);
+%     
     iterations = 0;
     
     % "for-loop " for training
-    monitor.Status = "Runnig";
+%     monitor.Status = "Runnig";
     for epoch = 1:numEpochs
         
        
-        if monitor.Stop
-            break
-        end
+%         if monitor.Stop
+%             break
+%         end
     
         % updae learnable parameters based on mini-batch of data
     
         count=5;
         for i = 1:numIterationsPerEpoch
     
-             if monitor.Stop
-                break
-             end
+%              if monitor.Stop
+%                 break
+%              end
     
             iterations = iterations +1;
             
@@ -265,7 +265,7 @@ function acc = calculateAccuracy(miniBatchSize, ...
             % Update the network parameters using the optimizer, like SGD, Adam
             %1 ADAM
             if ud ==1
-                [dlnet,averageGrad,averageSqGrad ] = adamupdate(dlnet,gradients,averageGrad,averageSqGrad,i,learnRate);
+                [dlnet,averageGrad,averageSqGrad ] = adamupdate(dlnet,gradients,averageGrad,averageSqGrad,iterations,learnRate);
             end
             if ud ==2
                 [dlnet,vel] = sgdmupdate(dlnet,gradients,vel,learnRate);
@@ -280,23 +280,23 @@ function acc = calculateAccuracy(miniBatchSize, ...
                 % training accuracy
                 accuracy = 1-loss;
                 
-                fprintf("Epoche: %d ; Iteration: %d ; Accuracy: %d  ; Validation: %d\n ",epoch,i,accuracy,ValAccuracy);
+                fprintf("Epoche: %d ; Iteration: %d ; Accuracy: %d  ; Validation: %d\n ",epoch,iterations,accuracy,ValAccuracy);
                 
                 % update training Monitor
     
-                updateInfo(monitor,Learning_rate=learnRate,Epoch= string(epoch) + " of " + string(numEpochs), ...
-                            Iteration = string(iterations) + " of " + string(maxIteration), ...
-                            Training_Accuracy= string((1-loss)*100) +"%", ...
-                            Validation_Accuracy= string((ValAccuracy)*100)+"%");
-                
-                recordMetrics(monitor,iterations, ...
-                               TrainingLoss=loss, ...
-                               TrainingAccuracy=(1-loss)*100, ...
-                               ValidationLoss=(1-ValAccuracy), ...
-                               ValidationAccuracy=ValAccuracy*100);
-    
-    
-                monitor.Progress = 100*iterations/maxIteration;
+%                 updateInfo(monitor,Learning_rate=learnRate,Epoch= string(epoch) + " of " + string(numEpochs), ...
+%                             Iteration = string(iterations) + " of " + string(maxIteration), ...
+%                             Training_Accuracy= string((1-loss)*100) +"%", ...
+%                             Validation_Accuracy= string((ValAccuracy)*100)+"%");
+%                 
+%                 recordMetrics(monitor,iterations, ...
+%                                TrainingLoss=loss, ...
+%                                TrainingAccuracy=(1-loss)*100, ...
+%                                ValidationLoss=(1-ValAccuracy), ...
+%                                ValidationAccuracy=ValAccuracy*100);
+%     
+%     
+%                 monitor.Progress = 100*iterations/maxIteration;
                 count = count + updateMonitorIter;
             end
     
@@ -307,7 +307,7 @@ function acc = calculateAccuracy(miniBatchSize, ...
         end
     end
     
-    monitor.Status = "Done";
+%     monitor.Status = "Done";
     
     % Calculate accuracy !Test Data!
     

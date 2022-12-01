@@ -88,7 +88,7 @@ maxIteration = numEpochs * numIterationsPerEpoch;
 
 classes = categories(YTrain);
 
-updateMonitorIter = 50;
+updateMonitorIter = 10;
 
 %% Train neural network
 
@@ -149,7 +149,7 @@ for epoch = 1:numEpochs
         
         % Update the network parameters using the optimizer, like SGD, Adam
         %1 ADAM
-        [dlnet,averageGrad,averageSqGrad ] = adamupdate(dlnet,gradients,averageGrad,averageSqGrad,i,learnRate);
+        [dlnet,averageGrad,averageSqGrad ] = adamupdate(dlnet,gradients,averageGrad,averageSqGrad,iterations,learnRate);
         
         % Calculate accuracy & show the training progress.
         if count < i
@@ -161,7 +161,7 @@ for epoch = 1:numEpochs
             % training accuracy
             accuracy = 1-loss;
             
-            fprintf("Epoche: %d ; Iteration: %d ; Accuracy: %d  ; Validation: %d\n ",epoch,i,accuracy,ValAccuracy);
+            fprintf("Epoche: %d ; Iteration: %d ; Accuracy: %d  ; Validation: %d\n ",epoch,iterations,accuracy,ValAccuracy);
             
             % update training Monitor (Aufgabe 1)
 
